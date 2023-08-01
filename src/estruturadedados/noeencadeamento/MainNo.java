@@ -1,6 +1,6 @@
 package estruturadedados.noeencadeamento;
 
-public class Main {
+public class MainNo {
     public static void main(String[] args) {
         /* NORMAL */
         No no1 = new No("Conteudo No 1");

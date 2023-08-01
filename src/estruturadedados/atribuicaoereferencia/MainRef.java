@@ -1,6 +1,6 @@
 package estruturadedados.atribuicaoereferencia;
 
-public class Main {
+public class MainRef {
     public static void main(String[] args) {
         // Atribuições em Java são por cópia de valor SEMPRE
 
