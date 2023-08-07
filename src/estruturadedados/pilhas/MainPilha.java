@@ -3,13 +3,10 @@ package estruturadedados.pilhas;
 public class MainPilha {
     public static void main(String[] args){
         Pilha minhaPilha = new Pilha();  
-        NoPilha no1 = new NoPilha(1);
-        NoPilha no2 = new NoPilha(2);
-        NoPilha no3 = new NoPilha(3);
 
-        minhaPilha.push(no1); // aceita apenas No de Inteiro
-        minhaPilha.push(no2); // aceita apenas No de Inteiro
-        minhaPilha.push(no3); // aceita apenas No de Inteiro
+        minhaPilha.push(new NoPilha(1)); // aceita apenas No de Inteiro
+        minhaPilha.push(new NoPilha(2)); // aceita apenas No de Inteiro
+        minhaPilha.push(new NoPilha(3)); // aceita apenas No de Inteiro
 
         System.out.println(minhaPilha);
     }

@@ -32,6 +32,6 @@ public class NoPilha {
     public String toString(){
         return "No{" +
                "dado=" + dado + 
-               "}";
+               '}';
     }
 }

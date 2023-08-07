@@ -50,6 +50,6 @@ public class Pilha {
         }
 
         stringRetorno += "============\n";
-        return stringRetorno.toString();
+        return stringRetorno;
     }
 }
