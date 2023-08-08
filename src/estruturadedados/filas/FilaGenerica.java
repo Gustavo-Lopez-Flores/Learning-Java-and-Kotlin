@@ -1,9 +1,9 @@
 package estruturadedados.filas;
 
-public class Fila {
-    private NoFila refNoEntradaFila;
+public class FilaGenerica<T> { // no momento em que instanciarmos a classe iremos especificar que tipo de dados ela irá comportar (para enfileirar) 
+    private NoFilaGenerica<T> refNoEntradaFila;
 
-    public Fila(){
+    public FilaGenerica(){
         this.refNoEntradaFila = null;   
     }
 
@@ -15,9 +15,9 @@ public class Fila {
     */
 
     // Enqueue refatorado para embutir o nó
-    public void enqueue(Object obj){
+    public void enqueue(T obj){
         // O que faziamos no Main vamos fazer aqui
-        NoFila novoNo = new NoFila(obj); // vamos embutir o nó na classe Fila
+        NoFilaGenerica novoNo = new NoFilaGenerica(obj); // vamos embutir o nó na classe Fila
         novoNo.setRefNoFila(refNoEntradaFila);
         refNoEntradaFila = novoNo;
     }
@@ -40,9 +40,9 @@ public class Fila {
     */
 
     // First refatorado para retornar o object ao invés de retornar o primeiro nó
-    public Object first(){
+    public T first(){
         if(!isEmpty()){
-            NoFila primeiroNo = refNoEntradaFila;
+            NoFilaGenerica primeiroNo = refNoEntradaFila;
             while(true){
                 if(primeiroNo.getRefNoFila() != null){
                     primeiroNo = primeiroNo.getRefNoFila();
@@ -50,7 +50,7 @@ public class Fila {
                     break;
                 }
             }
-            return primeiroNo.getObject();
+            return (T) primeiroNo.getObject();
         }
         return null;
     }
@@ -76,10 +76,10 @@ public class Fila {
     */
 
     // Dequeue refatorado para retornar o object ao invés de retornar o primeiro nó
-    public Object dequeue(){
+    public T dequeue(){
         if(!isEmpty()){
-            NoFila primeiroNo = refNoEntradaFila;
-            NoFila noAuxiliar = refNoEntradaFila;
+            NoFilaGenerica primeiroNo = refNoEntradaFila;
+            NoFilaGenerica noAuxiliar = refNoEntradaFila;
             while(true){
                 if(primeiroNo.getRefNoFila() != null){
                     noAuxiliar = primeiroNo;
@@ -89,7 +89,7 @@ public class Fila {
                     break;
                 }
             }
-            return primeiroNo.getObject();
+            return (T)primeiroNo.getObject();
         }
         return null;
     }
@@ -101,7 +101,7 @@ public class Fila {
     @Override
     public String toString(){
         String stringRetorno = "";
-        NoFila noAuxiliar = refNoEntradaFila;
+        NoFilaGenerica noAuxiliar = refNoEntradaFila;
 
         if(refNoEntradaFila != null){
             while(true){
