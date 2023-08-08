@@ -4,6 +4,7 @@ public class MainFila {
     public static void main(String[] args){
         Fila minhaFila = new Fila();
 
+        // No método enqueue não estamos recebendo uma string, estamos recebendo um nó contendo uma string
         minhaFila.enqueue(new NoFila("primeiro"));
         minhaFila.enqueue(new NoFila("segundo"));
         minhaFila.enqueue(new NoFila("terceiro"));
