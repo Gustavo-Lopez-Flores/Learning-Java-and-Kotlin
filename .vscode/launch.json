@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "MainListaEncadeada",
+            "request": "launch",
+            "mainClass": "estruturadedados.listas.encadeadas.MainListaEncadeada",
+            "projectName": "Basico_4d4e8d14"
+        },
+        {
+            "type": "java",
             "name": "MainFila",
             "request": "launch",
             "mainClass": "estruturadedados.filas.MainFila",
