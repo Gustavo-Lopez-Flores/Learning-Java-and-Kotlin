@@ -1,4 +1,4 @@
-> ## Estrutura de Dados
+> ## Programando em Java
 
 Bem-vindo ao repositório de Exemplos de Estruturas de Dados em Java e Programação Orientada a Objetos! Este repositório é uma coleção de trechos de código e projetos em Java que demonstram diversas estruturas de dados e conceitos de programação orientada a objetos (POO).
 
