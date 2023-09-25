@@ -1,4 +1,4 @@
-package estruturadedados.listas.encadeadas;
+package estruturadedados.listas.simples;
 
 public class MainListaEncadeada {
     public static void main(String[] args){

@@ -1,4 +1,4 @@
-package estruturadedados.listas.encadeadas;
+package estruturadedados.listas.simples;
 
 public class NoListaEncadeada<T> {
     private T conteudo;
