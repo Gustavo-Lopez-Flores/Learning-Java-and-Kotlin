@@ -1,4 +1,4 @@
-package estruturadedados.atribuicaoereferencia;
+package atribuicaoereferencia;
 
 public class MeuObj {
 

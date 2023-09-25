@@ -1,4 +1,4 @@
-package estruturadedados.noeencadeamento;
+package noeencadeamento;
 
 public class No {
     private String conteudo;

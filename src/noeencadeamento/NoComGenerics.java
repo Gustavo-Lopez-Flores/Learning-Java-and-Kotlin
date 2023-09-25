@@ -1,4 +1,4 @@
-package estruturadedados.noeencadeamento;
+package noeencadeamento;
 
 public class NoComGenerics<T> {
     private T conteudo;

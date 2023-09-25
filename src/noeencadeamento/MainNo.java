@@ -1,4 +1,4 @@
-package estruturadedados.noeencadeamento;
+package noeencadeamento;
 
 public class MainNo {
     public static void main(String[] args) {

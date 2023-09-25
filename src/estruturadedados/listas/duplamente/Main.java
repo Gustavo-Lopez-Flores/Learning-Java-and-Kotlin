@@ -1,2 +1,7 @@
-package estruturadedados.listas.duplamente;public class Main {
+package estruturadedados.listas.duplamente;
+
+public class Main {
+    public static void main(String[] args) {
+
+    }
 }
