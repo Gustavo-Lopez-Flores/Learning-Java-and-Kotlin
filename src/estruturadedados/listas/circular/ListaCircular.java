@@ -74,4 +74,18 @@ public class ListaCircular<T>{
     public int size(){
         return this.tamanhoLista;
     }
+
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        No<T> noAuxiliar = this.cauda;
+
+        for(int i = 0; i < this.size(); i++){
+            sb.append("[No{conteudo=" + noAuxiliar.getConteudo() + "}] -->");
+            noAuxiliar = noAuxiliar.getNoProximo();
+        }
+        
+        sb.append(this.size() != 0 ? "(Retorno ao inicio)" : "[]");
+        return sb.toString();
+    }
 }
