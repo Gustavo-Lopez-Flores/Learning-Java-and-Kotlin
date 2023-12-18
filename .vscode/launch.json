@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "estruturadedados.listas.circular.Main",
+            "projectName": "Learning-Java-and-Kotlin_89120ead"
+        },
+        {
+            "type": "java",
             "name": "MainListaEncadeada",
             "request": "launch",
             "mainClass": "estruturadedados.listas.encadeadas.MainListaEncadeada",
