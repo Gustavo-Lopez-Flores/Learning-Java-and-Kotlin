@@ -8,6 +8,13 @@
             "type": "java",
             "name": "Main",
             "request": "launch",
+            "mainClass": "estruturadedados.arvores.binaria.Main",
+            "projectName": "Learning-Java-and-Kotlin_89120ead"
+        },
+        {
+            "type": "java",
+            "name": "Main",
+            "request": "launch",
             "mainClass": "estruturadedados.listas.circular.Main",
             "projectName": "Learning-Java-and-Kotlin_89120ead"
         },
