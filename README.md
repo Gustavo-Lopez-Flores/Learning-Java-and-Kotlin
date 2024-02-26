@@ -1,11 +1,26 @@
-> ## Programando em Java
+# Shard Bank
 
-Bem-vindo ao repositório de Exemplos de Estruturas de Dados em Java e Programação Orientada a Objetos! Este repositório é uma coleção de trechos de código e projetos em Java que demonstram diversas estruturas de dados e conceitos de programação orientada a objetos (POO).
+Bem-vindo ao repositório do trabalho prático da disciplina de Computação Distribuída, o objetivo é implementar:
 
-> ## Este repositório contém exemplos dos seguintes tópicos:
+## Client 
+> solicita um função OpClient() com os parâmetros de:
+- i. Data operação
+- ii. ContaCliente 
+- iii. Tipo (C para Credito ou D para Debito)
+- iv. Valor operação
 
-- Estruturas de dados fundamentais, como arrays, listas encadeadas, pilhas e filas.
-- Estruturas de dados mais avançadas, como árvores, grafos e tabelas hash.
-- Implementação de algoritmos comuns usando Java.
-- Princípios de programação orientada a objetos, incluindo encapsulamento, herança e polimorfismo.
-- Casos de uso do mundo real que demonstram a aplicação eficaz de estruturas de dados e conceitos de POO.
+<br>
+
+## Transaction Coordinator 
+> solicita ao Servidor de banco de dados: Shard A, a função Credito() com os parâmetros:
+- i. Data operação
+- ii. ContaCliente
+- iii. Valor operação
+
+<br>
+
+## Transaction Coordinator
+> solicita ao Servidor de banco de dados: Shard B, a função Debito() com os parâmetros:
+- i. Data operação
+- ii. ContaCliente
+- iii. Valor operação
