@@ -24,3 +24,6 @@ Bem-vindo ao repositório do trabalho prático da disciplina de Computação Dis
 - i. Data operação
 - ii. ContaCliente
 - iii. Valor operação
+
+### Representação:
+<img src="https://github.com/Gustavo-Lopez-Flores/Shard-Bank/blob/main/assets/img.png" alt="model" width="800" height="500">
