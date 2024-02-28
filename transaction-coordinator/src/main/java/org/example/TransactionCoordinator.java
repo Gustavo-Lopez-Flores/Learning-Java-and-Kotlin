@@ -22,7 +22,13 @@ public class TransactionCoordinator {
                 String request = in.readLine();
                 System.out.println("Solicitação do Cliente: " + request);
 
-                // Processar solicitação e encaminhar para o shard correspondente (A ou B)
+                // Extrair dados da solicitação do cliente
+                String[] requestData = request.split("\\|");
+                String[] clienteData = requestData[2].split(",");
+                String nomeCliente = clienteData[0];
+                System.out.println("Nome do Cliente: " + nomeCliente);
+
+                //  Encaminhar para o shard correspondente (A ou B)
 
                 // Enviar resposta ao Cliente
                 out.println("OK");
