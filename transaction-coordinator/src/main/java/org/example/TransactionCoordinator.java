@@ -5,13 +5,26 @@ import java.net.*;
 import java.sql.*;
 
 public class TransactionCoordinator {
+    public static boolean consultaConta(Statement statement, String idConta) throws SQLException {
+        String query = "SELECT * FROM cliente WHERE id_conta = '" + idConta + "'";
+        ResultSet resultSet = statement.executeQuery(query);
+        return resultSet.next(); // Retorna true se encontrou algum cliente com o id da conta
+    }
+
+    public static void criarConta(Statement statement, String nome, String idConta) throws SQLException {
+        String insertQuery = "INSERT INTO cliente (nome, id_conta, saldo_corrente) VALUES ('" + nome + "','" + idConta + "', 0)";
+        statement.executeUpdate(insertQuery);
+    }
+
     public static void main(String[] args) {
-        int port = 12345;
         Connection connection = null;
+
+        int port = 12345;
 
         try {
             connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/bank", "postgres", "minhasenha");
             Statement statement = connection.createStatement();
+
             ServerSocket serverSocket = new ServerSocket(port);
             System.out.println("Transaction Coordinator aguardando conexões...");
 
@@ -28,12 +41,17 @@ public class TransactionCoordinator {
 
                 // Extrair dados da solicitação do cliente
                 String[] requestData = request.split("\\|");
-                System.out.println("Nome do Cliente: " + requestData[2]);
+                String nome = requestData[2];
+                String idConta = requestData[3];
 
-                // Processa dados da conta
+                // Consulta para ver se o cliente já existe
+                if(!consultaConta(statement, idConta)){
+                    criarConta(statement, nome, idConta);
+                }
 
-                //  Encaminhar para o shard correspondente (A ou B)
-
+                // Encaminha para o Shard requisitado
+                String opcao = requestData[4];
+                if(opcao.equalsIgnoreCase("D"))
 
                 // Enviar resposta ao Cliente
                 out.println("OK");
@@ -49,6 +67,14 @@ public class TransactionCoordinator {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            if(connection != null){
+                try{
+                    connection.close();
+                } catch (SQLException e){
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }
