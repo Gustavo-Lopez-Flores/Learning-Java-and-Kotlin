@@ -26,7 +26,7 @@ public class ShardB {
             Statement statement = connection.createStatement();
 
             ServerSocket serverSocket = new ServerSocket(port);
-            System.out.println("Shard aguardando conexões...");
+            System.out.println("Shard B aguardando conexões...");
 
             while (true) {
                 Socket socket = serverSocket.accept();
@@ -36,15 +36,22 @@ public class ShardB {
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
                 // Receber solicitação do Transaction Coordinator
-                String request = in.readLine();
-                System.out.println("Solicitação do Transaction Coordinator: " + request);
+                String idConta = in.readLine();
+                String tipoTransacao = in.readLine();
+                String dataTransacao = in.readLine();
+                double valorTransacao = Double.parseDouble(in.readLine());
 
-                // Processar solicitação, consultar banco de dados e responder ao Transaction Coordinator
+                // Verificar saldo suficiente na conta do cliente
+                double saldo = consultaSaldo(statement, idConta);
+                if (saldo >= valorTransacao) {
+                    // Salvar a transação na tabela de transações
+                    String insertQuery = "INSERT INTO transacao (id_conta, tipo_transacao, data_transacao, valor) VALUES ('" + idConta + "', '" + tipoTransacao + "', '" + dataTransacao + "', " + valorTransacao + ")";
+                    statement.executeUpdate(insertQuery);
 
-                // Responder ao Transaction Coordinator se foi possível realizar a operação
-                out.println("OK");
-
-                // Guardar o histórico no banco de transações
+                    out.println("Transação realizada com sucesso");
+                } else {
+                    out.println("Saldo insuficiente para realizar a transação");
+                }
 
                 in.close();
                 out.close();
@@ -55,10 +62,10 @@ public class ShardB {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if(connection != null){
-                try{
+            if (connection != null) {
+                try {
                     connection.close();
-                } catch (SQLException e){
+                } catch (SQLException e) {
                     e.printStackTrace();
                 }
             }
