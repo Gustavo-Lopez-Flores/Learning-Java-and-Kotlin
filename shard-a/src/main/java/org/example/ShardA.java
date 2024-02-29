@@ -5,6 +5,18 @@ import java.net.*;
 import java.sql.*;
 
 public class ShardA {
+    public static double consultaSaldo(Statement statement, String idConta) throws SQLException {
+        String query = "SELECT saldo_corrente FROM cliente WHERE id_conta = '" + idConta + "'";
+        ResultSet resultSet = statement.executeQuery(query);
+
+        double saldo = 0.0;
+        if (resultSet.next()) {
+            saldo = resultSet.getDouble("saldo_corrente");
+        }
+
+        return saldo;
+    }
+
     public static void main(String[] args) {
         Connection connection = null;
         int port = 12347; // Porta específica para Shard A
@@ -29,11 +41,12 @@ public class ShardA {
                 String dataTransacao = in.readLine();
                 double valorTransacao = Double.parseDouble(in.readLine());
 
+                // Verificar saldo suficiente na conta do cliente
+                double saldo = consultaSaldo(statement, idConta);
+
                 // Atualizar saldo corrente do cliente após transação de crédito
-                if (tipoTransacao.equalsIgnoreCase("C")) {
-                    String updateQuery = "UPDATE cliente SET saldo_corrente = saldo_corrente + " + valorTransacao + " WHERE id_conta = '" + idConta + "'";
-                    statement.executeUpdate(updateQuery);
-                }
+                String updateQuery = "UPDATE cliente SET saldo_corrente = saldo_corrente + " + (valorTransacao + saldo) + " WHERE id_conta = '" + idConta + "'";
+                statement.executeUpdate(updateQuery);
 
                 // Salvar a transação na tabela de transações
                 String insertQuery = "INSERT INTO transacao (id_conta, tipo_transacao, data_transacao, valor) VALUES ('" + idConta + "', '" + tipoTransacao + "', '" + dataTransacao + "', " + valorTransacao + ")";

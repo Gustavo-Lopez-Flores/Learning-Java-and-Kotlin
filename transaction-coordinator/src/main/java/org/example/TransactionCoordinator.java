@@ -84,7 +84,7 @@ public class TransactionCoordinator {
 
     private static void encaminharParaShardA(Socket socket, String idConta, String tipoTransacao, String dataTransacao, double valorTransacao) {
         try {
-            Socket shardSocket = new Socket("localhost", 12346); // Endereço e porta do Shard A
+            Socket shardSocket = new Socket("localhost", 12347); // Endereço e porta do Shard A
             PrintWriter out = new PrintWriter(shardSocket.getOutputStream(), true);
 
             // Enviar dados para o Shard A
@@ -112,7 +112,7 @@ public class TransactionCoordinator {
 
     private static void encaminharParaShardB(Socket socket, String idConta, String tipoTransacao, String dataTransacao, double valorTransacao) {
         try {
-            Socket shardSocket = new Socket("localhost", 12347); // Endereço e porta do Shard B
+            Socket shardSocket = new Socket("localhost", 12346); // Endereço e porta do Shard B
             PrintWriter out = new PrintWriter(shardSocket.getOutputStream(), true);
 
             // Enviar dados para o Shard B

@@ -27,7 +27,7 @@ SET default_table_access_method = heap;
 CREATE TABLE public.cliente (
     id integer NOT NULL,
     nome character varying(100) NOT NULL,
-    id_conta character varying(50) NOT NULL,
+    id_conta character varying(8) NOT NULL,
     saldo_corrente numeric(12,2) DEFAULT 0 NOT NULL
 );
 
@@ -62,7 +62,7 @@ ALTER SEQUENCE public.cliente_id_seq OWNED BY public.cliente.id;
 
 CREATE TABLE public.transacao (
     id integer NOT NULL,
-    id_conta integer NOT NULL,
+    id_conta character varying(8) NOT NULL,
     tipo_transacao character varying(1) NOT NULL,
     data_transacao timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
     valor numeric(12,2) NOT NULL,
@@ -167,7 +167,7 @@ ALTER TABLE ONLY public.transacao
 --
 
 ALTER TABLE ONLY public.transacao
-    ADD CONSTRAINT fk_id_conta FOREIGN KEY (id_conta) REFERENCES public.cliente(id) ON DELETE CASCADE;
+    ADD CONSTRAINT fk_id_conta FOREIGN KEY (id_conta) REFERENCES public.cliente(id_conta) ON DELETE CASCADE;
 
 
 --
@@ -175,7 +175,7 @@ ALTER TABLE ONLY public.transacao
 --
 
 ALTER TABLE ONLY public.transacao
-    ADD CONSTRAINT transacao_id_conta_fkey FOREIGN KEY (id_conta) REFERENCES public.cliente(id);
+    ADD CONSTRAINT transacao_id_conta_fkey FOREIGN KEY (id_conta) REFERENCES public.cliente(id_conta);
 
 
 --
