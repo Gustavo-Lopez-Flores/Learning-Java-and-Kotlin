@@ -2,14 +2,19 @@ package org.example;
 
 import java.io.*;
 import java.net.*;
+import java.sql.*;
 
 public class ShardA {
     public static void main(String[] args) {
-        int port = 12346; // Porta específica para Shard A ou Shard B
+        Connection connection = null;
+        int port = 12347; // Porta específica para Shard A
 
         try {
+            connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/bank", "postgres", "minhasenha");
+            Statement statement = connection.createStatement();
+
             ServerSocket serverSocket = new ServerSocket(port);
-            System.out.println("Shard aguardando conexões...");
+            System.out.println("Shard A aguardando conexões...");
 
             while (true) {
                 Socket socket = serverSocket.accept();
@@ -19,22 +24,39 @@ public class ShardA {
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
                 // Receber solicitação do Transaction Coordinator
-                String request = in.readLine();
-                System.out.println("Solicitação do Transaction Coordinator: " + request);
+                String idConta = in.readLine();
+                String tipoTransacao = in.readLine();
+                String dataTransacao = in.readLine();
+                double valorTransacao = Double.parseDouble(in.readLine());
 
-                // Processar solicitação, consultar banco de dados e responder ao Transaction Coordinator
+                // Atualizar saldo corrente do cliente após transação de crédito
+                if (tipoTransacao.equalsIgnoreCase("C")) {
+                    String updateQuery = "UPDATE cliente SET saldo_corrente = saldo_corrente + " + valorTransacao + " WHERE id_conta = '" + idConta + "'";
+                    statement.executeUpdate(updateQuery);
+                }
 
-                // Responder ao Transaction Coordinator se foi possível realizar a operação
-                out.println("OK");
+                // Salvar a transação na tabela de transações
+                String insertQuery = "INSERT INTO transacao (id_conta, tipo_transacao, data_transacao, valor) VALUES ('" + idConta + "', '" + tipoTransacao + "', '" + dataTransacao + "', " + valorTransacao + ")";
+                statement.executeUpdate(insertQuery);
 
-                // Guardar o histórico no banco de transações
+                out.println("Transação de crédito realizada com sucesso");
 
                 in.close();
                 out.close();
                 socket.close();
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }
