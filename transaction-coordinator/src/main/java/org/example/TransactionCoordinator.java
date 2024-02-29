@@ -2,12 +2,16 @@ package org.example;
 
 import java.io.*;
 import java.net.*;
+import java.sql.*;
 
 public class TransactionCoordinator {
     public static void main(String[] args) {
         int port = 12345;
+        Connection connection = null;
 
         try {
+            connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/bank", "postgres", "minhasenha");
+            Statement statement = connection.createStatement();
             ServerSocket serverSocket = new ServerSocket(port);
             System.out.println("Transaction Coordinator aguardando conexões...");
 
@@ -24,11 +28,12 @@ public class TransactionCoordinator {
 
                 // Extrair dados da solicitação do cliente
                 String[] requestData = request.split("\\|");
-                String[] clienteData = requestData[2].split(",");
-                String nomeCliente = clienteData[0];
-                System.out.println("Nome do Cliente: " + nomeCliente);
+                System.out.println("Nome do Cliente: " + requestData[2]);
+
+                // Processa dados da conta
 
                 //  Encaminhar para o shard correspondente (A ou B)
+
 
                 // Enviar resposta ao Cliente
                 out.println("OK");
@@ -40,6 +45,8 @@ public class TransactionCoordinator {
                 out.close();
                 socket.close();
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
