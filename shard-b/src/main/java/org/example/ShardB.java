@@ -44,6 +44,10 @@ public class ShardB {
                 // Verificar saldo suficiente na conta do cliente
                 double saldo = consultaSaldo(statement, idConta);
                 if (saldo >= valorTransacao) {
+                    // Atualizar saldo corrente do cliente após transação de débito
+                    String updateQuery = "UPDATE cliente SET saldo_corrente = saldo_corrente - " + valorTransacao + " WHERE id_conta = '" + idConta + "'";
+                    statement.executeUpdate(updateQuery);
+
                     // Salvar a transação na tabela de transações
                     String insertQuery = "INSERT INTO transacao (id_conta, tipo_transacao, data_transacao, valor) VALUES ('" + idConta + "', '" + tipoTransacao + "', '" + dataTransacao + "', " + valorTransacao + ")";
                     statement.executeUpdate(insertQuery);
