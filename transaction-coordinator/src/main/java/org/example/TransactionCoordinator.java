@@ -18,7 +18,6 @@ public class TransactionCoordinator {
 
     public static void main(String[] args) {
         Connection connection = null;
-
         int port = 12345;
 
         try {
@@ -43,6 +42,9 @@ public class TransactionCoordinator {
                 String[] requestData = request.split("\\|");
                 String nome = requestData[2];
                 String idConta = requestData[3];
+                String tipoTransacao = requestData[4];
+                String dataTransacao = requestData[1];
+                double valorTransacao = Double.parseDouble(requestData[5]);
 
                 // Consulta para ver se o cliente já existe
                 if(!consultaConta(statement, idConta)){
@@ -50,14 +52,16 @@ public class TransactionCoordinator {
                 }
 
                 // Encaminha para o Shard requisitado
-                String opcao = requestData[4];
-                if(opcao.equalsIgnoreCase("D"))
-
-                // Enviar resposta ao Cliente
-                out.println("OK");
+                if(tipoTransacao.equalsIgnoreCase("C")){
+                    // Enviar solicitação para o Shard A
+                    encaminharParaShardA(socket, idConta, tipoTransacao, dataTransacao, valorTransacao);
+                } else if (tipoTransacao.equalsIgnoreCase("D")) {
+                    // Enviar solicitação para o Shard B
+                    encaminharParaShardB(socket, idConta, tipoTransacao, dataTransacao, valorTransacao);
+                }
 
                 // Emitir mensagem "Transação concluída com sucesso" para o Cliente
-                out.println("Transação concluída com sucesso");
+                out.println("Operação finalizada");
 
                 in.close();
                 out.close();
@@ -75,6 +79,62 @@ public class TransactionCoordinator {
                     e.printStackTrace();
                 }
             }
+        }
+    }
+
+    private static void encaminharParaShardA(Socket socket, String idConta, String tipoTransacao, String dataTransacao, double valorTransacao) {
+        try {
+            Socket shardSocket = new Socket("localhost", 12346); // Endereço e porta do Shard A
+            PrintWriter out = new PrintWriter(shardSocket.getOutputStream(), true);
+
+            // Enviar dados para o Shard A
+            out.println(idConta);
+            out.println(tipoTransacao);
+            out.println(dataTransacao);
+            out.println(valorTransacao);
+
+            // Receber resposta do Shard A
+            BufferedReader in = new BufferedReader(new InputStreamReader(shardSocket.getInputStream()));
+            String response = in.readLine();
+            System.out.println("Resposta do Shard A: " + response);
+
+            // Encaminhar resposta para o Cliente
+            PrintWriter clientOut = new PrintWriter(socket.getOutputStream(), true);
+            clientOut.println(response);
+
+            in.close();
+            out.close();
+            shardSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void encaminharParaShardB(Socket socket, String idConta, String tipoTransacao, String dataTransacao, double valorTransacao) {
+        try {
+            Socket shardSocket = new Socket("localhost", 12347); // Endereço e porta do Shard B
+            PrintWriter out = new PrintWriter(shardSocket.getOutputStream(), true);
+
+            // Enviar dados para o Shard B
+            out.println(idConta);
+            out.println(tipoTransacao);
+            out.println(dataTransacao);
+            out.println(valorTransacao);
+
+            // Receber resposta do Shard B
+            BufferedReader in = new BufferedReader(new InputStreamReader(shardSocket.getInputStream()));
+            String response = in.readLine();
+            System.out.println("Resposta do Shard B: " + response);
+
+            // Encaminhar resposta para o Cliente
+            PrintWriter clientOut = new PrintWriter(socket.getOutputStream(), true);
+            clientOut.println(response);
+
+            in.close();
+            out.close();
+            shardSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

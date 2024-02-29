@@ -2,12 +2,29 @@ package org.example;
 
 import java.io.*;
 import java.net.*;
+import java.sql.*;
 
 public class ShardB {
+    public static double consultaSaldo(Statement statement, String idConta) throws SQLException {
+        String query = "SELECT saldo_corrente FROM cliente WHERE id_conta = '" + idConta + "'";
+        ResultSet resultSet = statement.executeQuery(query);
+
+        double saldo = 0.0;
+        if (resultSet.next()) {
+            saldo = resultSet.getDouble("saldo_corrente");
+        }
+
+        return saldo;
+    }
+
     public static void main(String[] args) {
+        Connection connection = null;
         int port = 12346; // Porta específica para Shard A ou Shard B
 
         try {
+            connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/bank", "postgres", "minhasenha");
+            Statement statement = connection.createStatement();
+
             ServerSocket serverSocket = new ServerSocket(port);
             System.out.println("Shard aguardando conexões...");
 
@@ -33,8 +50,18 @@ public class ShardB {
                 out.close();
                 socket.close();
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            if(connection != null){
+                try{
+                    connection.close();
+                } catch (SQLException e){
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }
