@@ -45,7 +45,7 @@ public class ShardA {
                 double saldo = consultaSaldo(statement, idConta);
 
                 // Atualizar saldo corrente do cliente após transação de crédito
-                String updateQuery = "UPDATE cliente SET saldo_corrente = saldo_corrente + " + (valorTransacao + saldo) + " WHERE id_conta = '" + idConta + "'";
+                String updateQuery = "UPDATE cliente SET saldo_corrente = " + (saldo + valorTransacao) + " WHERE id_conta = '" + idConta + "'";
                 statement.executeUpdate(updateQuery);
 
                 // Salvar a transação na tabela de transações
