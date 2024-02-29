@@ -2,4 +2,16 @@
 select * from cliente;
 
 // Consultar Todas as Transações
-select * from transacao
+select * from transacao;
+
+// Ver o histórico de transações de um cliente pelo ID da conta
+SELECT * FROM transacao WHERE id_conta = 'seu_id_conta';
+
+// Ver o histórico de transações de um cliente pelo nome do cliente
+SELECT t.* FROM transacao t INNER JOIN cliente c ON t.id_conta = c.id WHERE c.nome = 'nome_cliente';
+
+// Ver o histórico de transações em ordem cronológica da data para todos os usuários
+SELECT * FROM transacao ORDER BY data_transacao;
+
+// Ver o histórico de transações em ordem cronológica da data para um usuário específico pelo ID da conta
+SELECT * FROM transacao WHERE id_conta = 'seu_id_conta' ORDER BY data_transacao;
